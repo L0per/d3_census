@@ -1,4 +1,4 @@
-var svgWidth = 960;
+var svgWidth = 750;
 var svgHeight = 500;
 
 var margin = {
@@ -56,8 +56,8 @@ function yScale(censusData, chosenYAxis) {
     var yLinearScale = d3
         .scaleLinear()
         .domain([
-            d3.min(censusData, d => d[chosenYAxis]),
-            d3.max(censusData, d => d[chosenYAxis])
+            d3.min(censusData, d => d[chosenYAxis]) * 0.9,
+            d3.max(censusData, d => d[chosenYAxis]) * 1.1
         ])
         .range([height, 0]);
 
@@ -146,10 +146,10 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
     
     // apply labels to tool tip
     var toolTip = d3.tip()
-        .attr("class", "tooltip")
+        .attr("class", "tooltip")	
         .offset([80, -60])
         .html(function(d) {
-            return (`${xlabel} ${d[chosenXAxis]}<br>${ylabel} ${d[chosenYAxis]}`);
+            return (`${d.state}<br>${xlabel} ${d[chosenXAxis]}<br>${ylabel} ${d[chosenYAxis]}`);
         });
     
     circlesGroup.call(toolTip);
@@ -208,8 +208,8 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
         .append("circle")
         .attr("cx", d => xLinearScale(d[chosenXAxis]))
         .attr("cy", d => yLinearScale(d[chosenYAxis]))
-        .attr("r", 20)
-        .attr("fill", "pink")
+        .attr("r", 10)
+        .attr("fill", "blue")
         .attr("opacity", ".5");
   
     // Create group for 3 x-axis labels
