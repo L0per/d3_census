@@ -1,9 +1,18 @@
-var svgWidth = 750;
-var svgHeight = 500;
+
+function makeResponsive() {
+
+    var svgArea = d3.select("body").select("svg");
+
+    if (!svgArea.empty()) {
+    svgArea.remove();
+    }
+
+var svgWidth = window.innerWidth * 0.8;
+var svgHeight = window.innerHeight * 0.8;
 
 var margin = {
     top: 20,
-    right: 40,
+    right: 200,
     bottom: 80,
     left: 100
 };
@@ -393,3 +402,8 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
 }).catch(function(error) {
     console.log(error);
     });
+}
+
+makeResponsive();
+
+d3.select(window).on("resize", makeResponsive);
