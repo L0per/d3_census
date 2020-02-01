@@ -53,7 +53,8 @@
 }
 
 .circle-labels {
-  font-weight: 600;
+  font-weight: 500;
+  font-size: 0.8rem;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;

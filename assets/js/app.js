@@ -142,9 +142,10 @@ function makeResponsive() {
 
             circlesLabelsGroup.transition()
                 .duration(1000)
-                .attr("x", d => (newXScale(d[chosenXAxis])) - 12)
-                .attr("y", d => (newYScale(d[chosenYAxis])) + 7);
-            console.log(circlesLabelsGroup)
+                .attr("x", d => (newXScale(d[chosenXAxis])) - 1)
+                .attr("y", d => (newYScale(d[chosenYAxis])) + 5)
+                .attr("text-anchor", "middle");
+
             return circlesLabelsGroup;
     }
 
@@ -184,7 +185,7 @@ function makeResponsive() {
             .attr("class", "tooltip")	
             .offset([100, -80])
             .html(function(d) {
-                return (`${d.state}<br>${xlabel} ${d[chosenXAxis]}<br>${ylabel} ${d[chosenYAxis]}`);
+                return (`<strong>${d.state}</strong><br>${xlabel} ${d[chosenXAxis]}<br>${ylabel} ${d[chosenYAxis]}`);
             });
         
         circlesGroup.call(toolTip);
@@ -242,8 +243,9 @@ function makeResponsive() {
             .enter()
             .append("text")
             .attr("class", "circle-labels")
-            .attr("x", d => (xLinearScale(d[chosenXAxis])) - 12)
-            .attr("y", d => (yLinearScale(d[chosenYAxis])) + 6)
+            .attr("x", d => (xLinearScale(d[chosenXAxis])) - 1)
+            .attr("y", d => (yLinearScale(d[chosenYAxis])) + 5)
+            .attr("text-anchor", "middle")
             .text(d => d.abbr)
     
         // append initial circles
@@ -253,7 +255,7 @@ function makeResponsive() {
             .append("circle")
             .attr("cx", d => xLinearScale(d[chosenXAxis]))
             .attr("cy", d => yLinearScale(d[chosenYAxis]))
-            .attr("r", 20)
+            .attr("r", 15)
             .attr("fill", "blue")
             .attr("opacity", ".5");
 
