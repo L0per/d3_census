@@ -2,6 +2,7 @@
 var chosenXAxis = "poverty";
 var chosenYAxis = 'obesity';
 
+
 function defaultLabelState(chosenAxis, label, classed) {
     if (chosenAxis === label && classed === 'active') {
         return true;
@@ -142,8 +143,8 @@ function makeResponsive() {
 
             circlesLabelsGroup.transition()
                 .duration(1000)
-                .attr("x", d => (newXScale(d[chosenXAxis])) - 1)
-                .attr("y", d => (newYScale(d[chosenYAxis])) + 5)
+                .attr("x", d => (newXScale(d[chosenXAxis])))
+                .attr("y", d => (newYScale(d[chosenYAxis])) + 4.5)
                 .attr("text-anchor", "middle");
 
             return circlesLabelsGroup;
@@ -160,24 +161,24 @@ function makeResponsive() {
 
         // labels based on x-axis
         if (chosenXAxis === "poverty") {
-            var xlabel = "Poverty (%)";
+            var xlabel = "Poverty (%):";
         }
         else if (chosenXAxis === "age") {
-            var xlabel = "Age";
+            var xlabel = "Age:";
         }
         else {
-            var xlabel = "Household Income (Median)";
+            var xlabel = "Household Income (Median):";
         }
 
         // labels based on y-axis
         if (chosenYAxis === "obesity") {
-            var ylabel = "Obesity (%)";
+            var ylabel = "Obesity (%):";
         }
         else if (chosenYAxis === "smokes") {
-            var ylabel = "Smokes (%)";
+            var ylabel = "Smokes (%):";
         }
         else {
-            var ylabel = "Lacks Healthcare (%)";
+            var ylabel = "Lacks Healthcare (%):";
         }
         
         // apply labels to tool tip
@@ -243,8 +244,8 @@ function makeResponsive() {
             .enter()
             .append("text")
             .attr("class", "circle-labels")
-            .attr("x", d => (xLinearScale(d[chosenXAxis])) - 1)
-            .attr("y", d => (yLinearScale(d[chosenYAxis])) + 5)
+            .attr("x", d => (xLinearScale(d[chosenXAxis])))
+            .attr("y", d => (yLinearScale(d[chosenYAxis])) + 4.5)
             .attr("text-anchor", "middle")
             .text(d => d.abbr)
     
@@ -256,7 +257,9 @@ function makeResponsive() {
             .attr("cx", d => xLinearScale(d[chosenXAxis]))
             .attr("cy", d => yLinearScale(d[chosenYAxis]))
             .attr("r", 15)
-            .attr("fill", "blue")
+            .attr("fill", "#7fcd91")
+            .attr("stroke", "#f5eaea")
+            .attr("stroke-width", "2px")
             .attr("opacity", ".5");
 
         // Create group for 3 x-axis labels
