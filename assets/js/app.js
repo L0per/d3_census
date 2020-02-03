@@ -259,7 +259,7 @@ function makeResponsive() {
             .append("circle")
             .attr("cx", d => xLinearScale(d[chosenXAxis]))
             .attr("cy", d => yLinearScale(d[chosenYAxis]))
-            .attr("r", 15)
+            .attr("r", 13)
             .attr("fill", "#7fcd91")
             .attr("stroke", "#f5eaea")
             .attr("stroke-width", "2px")
