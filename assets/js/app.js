@@ -1,8 +1,8 @@
-// initial params
+// initial chosen axis params
 var chosenXAxis = "poverty";
 var chosenYAxis = 'obesity';
 
-
+// used for keeping selected axis states upon window resize
 function defaultLabelState(chosenAxis, label, classed) {
     if (chosenAxis === label && classed === 'active') {
         return true;
@@ -18,17 +18,21 @@ function defaultLabelState(chosenAxis, label, classed) {
     }
 }
 
+// responsive chart layout
 function makeResponsive() {
 
+    // for responsive chart layout
     var svgArea = d3.select("body").select("svg");
 
     if (!svgArea.empty()) {
     svgArea.remove();
     }
 
+    // set svg width and hieght based on window size for responsive layout
     var svgWidth = window.innerWidth * 0.8;
     var svgHeight = window.innerHeight * 0.8;
 
+    // set margins
     var margin = {
         top: 20,
         right: window.innerWidth * 0.15,
@@ -36,6 +40,7 @@ function makeResponsive() {
         left: 100
     };
 
+    // correct for actual dimensions using margins
     var width = svgWidth - margin.left - margin.right;
     var height = svgHeight - margin.top - margin.bottom;
 
@@ -53,21 +58,19 @@ function makeResponsive() {
 
 
     /////////////////////////////////////////////
-    // axis scale functions
-    // updates scales on clicking axis label
+    // create scales for axes
     // @inputs: data and selected axis
-    // @returns: updated x/yLinearScale vars
+    // @returns: updated x/yLinearScale var
     /////////////////////////////////////////////
 
     // x-axis
     function xScale(censusData, chosenXAxis) {
 
-        // create scales
         var xLinearScale = d3
             .scaleLinear()
             .domain([
-                d3.min(censusData, d => d[chosenXAxis]) * 0.9,
-                d3.max(censusData, d => d[chosenXAxis]) * 1.1
+                d3.min(censusData, d => d[chosenXAxis]) * 0.9, // adjust values here to change scaling
+                d3.max(censusData, d => d[chosenXAxis]) * 1.1 // adjust values here to change scaling
             ])
             .range([0, width]);
 
@@ -77,12 +80,11 @@ function makeResponsive() {
     // y-axis
     function yScale(censusData, chosenYAxis) {
 
-        // create scales
         var yLinearScale = d3
             .scaleLinear()
             .domain([
-                d3.min(censusData, d => d[chosenYAxis]) * 0.8,
-                d3.max(censusData, d => d[chosenYAxis]) * 1.1
+                d3.min(censusData, d => d[chosenYAxis]) * 0.8, // adjust values here to change scaling
+                d3.max(censusData, d => d[chosenYAxis]) * 1.1 // adjust values here to change scaling
             ])
             .range([height, 0]);
 
@@ -90,10 +92,9 @@ function makeResponsive() {
     }
 
     /////////////////////////////////////////////
-    // axis functions
-    // updates x/yAxis vars on clicking axis labels
-    // @inputs: updated scales and x/yAxis
-    // @returns: updated x/yAxis vars
+    // update axes with new scales and transition
+    // @inputs: scales and old x/yAxis var
+    // @returns: updated x/yAxis var
     /////////////////////////////////////////////
 
     // x-axis
@@ -121,11 +122,12 @@ function makeResponsive() {
     }
 
     /////////////////////////////////////////////
-    // function for updating circles group with transitions
+    // update circle markers and labels with transitions
     // @inputs: circlesGroup, new x/y scales, chosen x/y axis vars
-    // @returns: updated circlesGroup
+    // @returns: updated circlesGroup and labels
     /////////////////////////////////////////////
 
+    // circles
     function renderCircles(circlesGroup, 
         newXScale, chosenXAxis, 
         newYScale, chosenYAxis) {
@@ -137,6 +139,8 @@ function makeResponsive() {
             return circlesGroup;
     }
 
+
+    // labels
     function renderCirclesLabels(circlesLabelsGroup, 
         newXScale, chosenXAxis, 
         newYScale, chosenYAxis) {
@@ -151,12 +155,11 @@ function makeResponsive() {
     }
 
     /////////////////////////////////////////////
-    // function for updating circles group with new tooltip
+    // update tooltip based on chosen axes
     // @inputs: circlesGroup, chosen x/y axis vars
     // @returns: updated circlesGroup
     /////////////////////////////////////////////
 
-    // function used for updating circles group with new tooltip
     function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
 
         // labels based on x-axis
@@ -191,11 +194,13 @@ function makeResponsive() {
         
         circlesGroup.call(toolTip);
     
+        // on mouseover event
         circlesGroup
             .on("mouseover", function(data) {
                 toolTip.show(data);
             })
-        // onmouseout event
+
+        // on mouseout event
             .on("mouseout", function(data, index) {
                 toolTip.hide(data);
             });
@@ -203,7 +208,7 @@ function makeResponsive() {
         return circlesGroup;
     }
 
-    // Retrieve data from the CSV file and execute everything below
+    // retrieve data from the CSV file
     d3.csv("assets/data/data.csv").then(function(censusData, err) {
         if (err) throw err;
 
@@ -217,13 +222,11 @@ function makeResponsive() {
             data.healthcare = +data.healthcare;
         });
     
-        // xLinearScale function above csv import
+        // initial scales
         var xLinearScale = xScale(censusData, chosenXAxis);
-
-        // yLinearScale function above csv import
         var yLinearScale = yScale(censusData, chosenYAxis);
     
-        // Create initial axis functions
+        // initial axes
         var bottomAxis = d3.axisBottom(xLinearScale);
         var leftAxis = d3.axisLeft(yLinearScale);
     
@@ -262,7 +265,7 @@ function makeResponsive() {
             .attr("stroke-width", "2px")
             .attr("opacity", ".5");
 
-        // Create group for 3 x-axis labels
+        // x-axis labels
         var xlabelsGroup = chartGroup.append("g")
             .attr("transform", `translate(${width / 2}, ${height + 20})`);
 
@@ -273,8 +276,6 @@ function makeResponsive() {
             .classed("active", defaultLabelState(chosenXAxis, 'poverty', 'active'))
             .classed("inactive", defaultLabelState(chosenXAxis, 'poverty', 'inactive'))
             .text("In Poverty (%)");
-
-        console.log(defaultLabelState(chosenXAxis, ))
     
         var ageLabel = xlabelsGroup.append("text")
             .attr("x", 0)
@@ -292,7 +293,7 @@ function makeResponsive() {
             .classed("inactive", defaultLabelState(chosenXAxis, 'income', 'inactive'))
             .text("Household Income (Median $)");
     
-        // Create group for 3 y-axis labels
+        // y-axis labels
         var ylabelsGroup = chartGroup.append("g")
             .attr("transform", "rotate(-90)");
         
@@ -323,10 +324,10 @@ function makeResponsive() {
             .classed("inactive", defaultLabelState(chosenYAxis, 'healthcare', 'inactive'))
             .text("Lakes Healthcare (%)");
     
-        // updateToolTip function above csv import
+        // update circle markers and tooltips based on chosen axes
         circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
     
-        // x axis labels event listener
+        // x axis labels event listener, updates chart based on axis selection
         xlabelsGroup.selectAll("text")
             .on("click", function() {
 
@@ -337,14 +338,13 @@ function makeResponsive() {
                     // replaces chosenXAxis with value
                     chosenXAxis = value;
                     
-                    // functions here found above csv import
                     // updates x scale for new data
                     xLinearScale = xScale(censusData, chosenXAxis);
 
                     // updates x axis with transition
                     xAxis = renderXAxes(xLinearScale, xAxis);
         
-                    // updates circles with new x values
+                    // updates circle markers and labels with new x values
                     circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis, yLinearScale, chosenYAxis);
                     circlesLabelsGroup = renderCirclesLabels(circlesLabelsGroup, xLinearScale, chosenXAxis, yLinearScale, chosenYAxis);
 
@@ -388,7 +388,7 @@ function makeResponsive() {
                 }
         });
 
-        // y axis labels event listener
+        // x axis labels event listener, updates chart based on axis selection
         ylabelsGroup.selectAll("text")
             .on("click", function() {
                 
@@ -399,14 +399,13 @@ function makeResponsive() {
                     // replaces chosenYAxis with value
                     chosenYAxis = value;
                     
-                    // functions here found above csv import
                     // updates y scale for new data
                     yLinearScale = yScale(censusData, chosenYAxis);
             
                     // updates y axis with transition
                     yAxis = renderYAxes(yLinearScale, yAxis);
         
-                    // updates circles with new y values
+                    // updates circle markers and labels with new y values
                     circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis, yLinearScale, chosenYAxis);
                     circlesLabelsGroup = renderCirclesLabels(circlesLabelsGroup, xLinearScale, chosenXAxis, yLinearScale, chosenYAxis);
 

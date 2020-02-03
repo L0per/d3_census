@@ -54,11 +54,18 @@ body {
   stroke: #f5eaea;
 }
 
+/* axis text and circles labels coloring */
 .tick > text, .circle-labels {
   fill: #f5eaea;
 }
 
 /* article text color */
-.article, h2 {
+.article {
   color: #f5eaea
+}
+
+/* header text */
+h2 {
+  color: #f5eaea;
+  font-weight: bold;
 }
