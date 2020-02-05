@@ -29,13 +29,31 @@ function makeResponsive() {
     }
 
     // set svg width and hieght based on window size for responsive layout
-    var svgWidth = window.innerWidth * 0.8;
-    var svgHeight = window.innerHeight * 0.8;
+    var svgWidth = 985;
+
+    if (window.innerWidth > 1200) {
+        svgWidth = 985;
+    }
+    else if (window.innerWidth > 992) {
+        svgWidth = 850;
+    }
+    else if (window.innerWidth > 767) {
+        svgWidth = 650;
+    }
+    else {
+        svgWidth = 575;
+    }
+    
+    // var svgWidth = window.innerWidth * 0.5;
+    var svgHeight = window.innerHeight * 0.5;
+
+    console.log(svgWidth)
+    console.log(window.innerWidth)
 
     // set margins
     var margin = {
         top: 20,
-        right: window.innerWidth * 0.15,
+        right: 100,
         bottom: 80,
         left: 100
     };
