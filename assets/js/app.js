@@ -45,7 +45,7 @@ function makeResponsive() {
     }
     
     // var svgWidth = window.innerWidth * 0.5;
-    var svgHeight = window.innerHeight * 0.5;
+    var svgHeight = 550;
 
     console.log(svgWidth)
     console.log(window.innerWidth)
